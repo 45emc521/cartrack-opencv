@@ -14,7 +14,7 @@ while True:
     height, width, _ = frame.shape
 
     # Extract Region of interest
-    roi = frame[340: 720,500: 800]
+    roi = frame[340:720, 500:800]
 
     # 1. Object Detection
     mask = object_detector.apply(roi)
@@ -25,9 +25,8 @@ while True:
         # Calculate area and remove small elements
         area = cv2.contourArea(cnt)
         if area > 100:
-            #cv2.drawContours(roi, [cnt], -1, (0, 255, 0), 2)
+            # cv2.drawContours(roi, [cnt], -1, (0, 255, 0), 2)
             x, y, w, h = cv2.boundingRect(cnt)
-
 
             detections.append([x, y, w, h])
 
@@ -35,7 +34,9 @@ while True:
     boxes_ids = tracker.update(detections)
     for box_id in boxes_ids:
         x, y, w, h, id = box_id
-        cv2.putText(roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+        cv2.putText(
+            roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2
+        )
         cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
     cv2.imshow("roi", roi)
